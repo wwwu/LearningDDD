@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LearningDDD.Domain.Interfaces
+namespace LearningDDD.Domain.IRepository
 {
     /// <summary>
     /// 泛型仓储接口，继承IDisposable，显式释放资源
     /// </summary>
-    public interface IRepository<TEntity> : IDisposable where TEntity : class
+    public interface IBaseRepository<TEntity> : IDisposable where TEntity : class
     {
         /// <summary>
         /// 添加
