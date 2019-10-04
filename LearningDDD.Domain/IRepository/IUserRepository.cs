@@ -2,11 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace LearningDDD.Domain.IRepository
 {
     public interface IUserRepository : IBaseRepository<User>
     {
-        User GetByEmail(string email);
+        Task<User> GetByEmailAsync(string email);
     }
 }

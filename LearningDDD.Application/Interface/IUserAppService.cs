@@ -2,19 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace LearningDDD.Application.Interface
 {
     public interface IUserAppService: IDisposable
     {
-        void Add(UserVM userVM);
+        Task AddAsync(UserVM userVM);
 
         IEnumerable<UserVM> GetAll();
 
-        UserVM GetById(Guid id);
+        Task<UserVM> GetByIdAsync(Guid id);
 
         void Update(UserVM userVM);
 
-        void Remove(Guid id);
+        Task RemoveAsync(Guid id);
     }
 }
