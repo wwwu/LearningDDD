@@ -24,19 +24,26 @@ namespace LearningDDD.Infrastructure.Data.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            #region User
             modelBuilder.Entity<User>().HasKey(s => s.Id);
-
             modelBuilder.Entity<User>().Property(s => s.Password)
                 .HasColumnType("varchar(100)")
                 .IsRequired();
-
             modelBuilder.Entity<User>().Property(s => s.Name)
                 .HasColumnType("varchar(50)")
                 .IsRequired();
-
             modelBuilder.Entity<User>().Property(s => s.Email)
                 .HasColumnType("varchar(100)")
                 .IsRequired();
+            //处理值对象配置，否则会被视为实体
+            modelBuilder.Entity<User>().OwnsOne(s => s.Address, ar =>
+            {
+                ar.Property(s => s.City).HasColumnType("varchar(50)");
+                ar.Property(s => s.Province).HasColumnType("varchar(50)");
+                ar.Property(s => s.StreetAndNumber).HasColumnType("varchar(100)");
+            });
+
+            #endregion
 
             base.OnModelCreating(modelBuilder);
         }

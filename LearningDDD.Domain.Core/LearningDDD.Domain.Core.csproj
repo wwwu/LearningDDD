@@ -4,8 +4,4 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\LearningDDD.Domain.Core\LearningDDD.Domain.Core.csproj" />
-  </ItemGroup>
-
 </Project>

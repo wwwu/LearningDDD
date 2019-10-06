@@ -7,6 +7,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
   </ItemGroup>
@@ -14,6 +15,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LearningDDD.Application\LearningDDD.Application.csproj" />
+    <ProjectReference Include="..\LearningDDD.Domain\LearningDDD.Domain.csproj" />
+    <ProjectReference Include="..\LearningDDD.Infrastructure.Data\LearningDDD.Infrastructure.Data.csproj" />
   </ItemGroup>
 
 </Project>

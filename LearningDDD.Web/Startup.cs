@@ -9,6 +9,13 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using AutoMapper;
+using LearningDDD.Application.AutoMapper;
+using LearningDDD.Application.Interface;
+using LearningDDD.Application.Implement;
+using LearningDDD.Domain.IRepository;
+using LearningDDD.Infrastructure.Data.Repository;
+using LearningDDD.Infrastructure.Data.Context;
 
 namespace LearningDDD.Web
 {
@@ -30,6 +37,28 @@ namespace LearningDDD.Web
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
+            #region AutoMapper
+
+            AutoMapper.IConfigurationProvider mapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new DomainToViewModelMappingProfile());
+                cfg.AddProfile(new ViewModelToDomainMappingProfile());
+            });
+            services.AddSingleton(mapperConfig);
+            services.AddScoped<IMapper, Mapper>();
+
+            #endregion
+
+            #region DI
+
+            //注册Application
+            services.AddScoped<IUserAppService, UserAppService>();
+            //注册Infrastructure
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<UserContext>();
+
+            #endregion
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

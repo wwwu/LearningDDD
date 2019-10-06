@@ -14,7 +14,7 @@ namespace LearningDDD.Application.Interface
 
         Task<UserVM> GetByIdAsync(Guid id);
 
-        void Update(UserVM userVM);
+        Task Update(UserVM userVM);
 
         Task RemoveAsync(Guid id);
     }

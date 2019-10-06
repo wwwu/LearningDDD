@@ -25,11 +25,7 @@ namespace LearningDDD.Application.Implement
         public async Task AddAsync(UserVM userVM)
         {
             await _userRepository.AddAsync(_mapper.Map<User>(userVM));
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(true);
+            await _userRepository.SaveChangesAsync();
         }
 
         public IEnumerable<UserVM> GetAll()
@@ -46,11 +42,18 @@ namespace LearningDDD.Application.Implement
         public async Task RemoveAsync(Guid id)
         {
             await _userRepository.RemoveAsync(id);
+            await _userRepository.SaveChangesAsync();
         }
 
-        public void Update(UserVM userVM)
+        public async Task Update(UserVM userVM)
         {
             _userRepository.Update(_mapper.Map<User>(userVM));
+            await _userRepository.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(true);
         }
     }
 }
