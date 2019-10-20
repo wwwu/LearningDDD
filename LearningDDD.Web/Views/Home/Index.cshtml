@@ -1,8 +1,138 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@using LearningDDD.Application.ViewModels;
+@model IEnumerable<UserVM>
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+<br />
+<br />
+
+<div style="margin:10px 0">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addModal">添加</button>
+</div>
+
+<!-- User Table -->
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">邮箱</th>
+            <th scope="col">姓名</th>
+            <th scope="col">地址</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@item.Id</th>
+                <td>@item.Email</td>
+                <td>@item.Name</td>
+                <td>@item.Address.GetFullAddress()</td>
+                <td>
+                    <button type="button" class="btn btn-primary btn-sm">编辑</button>
+                    <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="@item.Id">删除</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Add Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">添加</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form-add">
+                    <div class="form-group row">
+                        <label for="Email" class="col-sm-2 col-form-label">Email<font class="text-danger">*</font></label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="Email" name="Email" placeholder="email@example.com">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="Name" class="col-sm-2 col-form-label">Name<font class="text-danger">*</font></label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="Name" name="Name" placeholder="Name">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="Password" class="col-sm-2 col-form-label">Password<font class="text-danger">*</font></label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" id="Password" name="Password">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputProvince" class="col-sm-2 col-form-label">省</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputProvince" name="Address.Province" placeholder="广东省">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputCity" class="col-sm-2 col-form-label">市</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputCity" name="Address.City" placeholder="深圳市">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputStreet" class="col-sm-2 col-form-label">详细</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputStreet" name="Address.StreetAndNumber" placeholder="深南大道XXX">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="btn-add">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{ 
+<script type="text/javascript">
+    $(function () {
+        $("#btn-add").click(function () {
+            $.ajax({
+                type: "post",
+                dataType: "json",
+                url: "/home/insert",
+                data: $("#form-add").serialize(),
+                success: function (result) {
+                    location.reload();
+                },
+                error: function (ex) {
+                    alert("异常");
+                }
+            });
+        });
+
+        $(".btn-delete").click(function () {
+            var id = $(this).attr("data-id");
+            var tr = $(this).parent().parent();
+            $.ajax({
+                type: "delete",
+                url: "/home/delete/"+id,
+                success: function (result) {
+                    tr.remove();
+                },
+                error: function (ex) {
+                    alert("异常");
+                }
+            })
+        });
+    })
+</script>
+}

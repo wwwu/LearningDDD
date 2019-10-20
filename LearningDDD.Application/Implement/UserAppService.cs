@@ -6,6 +6,7 @@ using LearningDDD.Domain.IRepository;
 using LearningDDD.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LearningDDD.Application.Implement

@@ -16,6 +16,7 @@ using LearningDDD.Application.Implement;
 using LearningDDD.Domain.IRepository;
 using LearningDDD.Infrastructure.Data.Repository;
 using LearningDDD.Infrastructure.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace LearningDDD.Web
 {
@@ -38,6 +39,13 @@ namespace LearningDDD.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            #region 数据库上下文
+
+            services.AddDbContextPool<UserContext>(options =>
+                options.UseMySql(Configuration["ConnectionStrings:DefaultConnection"]), poolSize: 128);
+
+            #endregion
+
             #region AutoMapper
 
             AutoMapper.IConfigurationProvider mapperConfig = new MapperConfiguration(cfg =>
@@ -50,7 +58,7 @@ namespace LearningDDD.Web
 
             #endregion
 
-            #region DI
+            #region IOC
 
             //注册Application
             services.AddScoped<IUserAppService, UserAppService>();
@@ -59,7 +67,6 @@ namespace LearningDDD.Web
             services.AddScoped<UserContext>();
 
             #endregion
-
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

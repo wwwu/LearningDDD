@@ -46,12 +46,15 @@ namespace LearningDDD.Infrastructure.Data.Migrations
                             b1.Property<Guid>("UserId");
 
                             b1.Property<string>("City")
+                                .HasColumnName("Address_City")
                                 .HasColumnType("varchar(50)");
 
                             b1.Property<string>("Province")
+                                .HasColumnName("Address_Province")
                                 .HasColumnType("varchar(50)");
 
                             b1.Property<string>("StreetAndNumber")
+                                .HasColumnName("Address_StreetAndNumber")
                                 .HasColumnType("varchar(100)");
 
                             b1.HasKey("UserId");
