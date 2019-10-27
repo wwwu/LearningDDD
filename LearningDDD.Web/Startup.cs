@@ -17,6 +17,7 @@ using LearningDDD.Domain.IRepository;
 using LearningDDD.Infrastructure.Data.Repository;
 using LearningDDD.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace LearningDDD.Web
 {
@@ -39,15 +40,13 @@ namespace LearningDDD.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            #region 数据库上下文
+            #region IOC组件注册
 
+            //DbContext
             services.AddDbContextPool<UserContext>(options =>
                 options.UseMySql(Configuration["ConnectionStrings:DefaultConnection"]), poolSize: 128);
 
-            #endregion
-
-            #region AutoMapper
-
+            //AutoMapper
             AutoMapper.IConfigurationProvider mapperConfig = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new DomainToViewModelMappingProfile());
@@ -56,15 +55,12 @@ namespace LearningDDD.Web
             services.AddSingleton(mapperConfig);
             services.AddScoped<IMapper, Mapper>();
 
-            #endregion
-
-            #region IOC
-
-            //注册Application
-            services.AddScoped<IUserAppService, UserAppService>();
-            //注册Infrastructure
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<UserContext>();
+            //Application Service
+            foreach (var item in GetClassAndInterface("LearningDDD.Application", s => s.Name.EndsWith("AppService")))
+                services.AddScoped(item.Value, item.Key);
+            //Repository
+            foreach (var item in GetClassAndInterface("LearningDDD.Infrastructure.Data", s => s.Name.EndsWith("Repository")))
+                services.AddScoped(item.Value, item.Key);
 
             #endregion
 
@@ -95,6 +91,22 @@ namespace LearningDDD.Web
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+
+        public static List<KeyValuePair<Type,Type>> GetClassAndInterface(string assemblyName, Func<Type, bool> func = null)
+        {
+            var result = new List<KeyValuePair<Type, Type>>();
+            Assembly assembly = Assembly.Load(assemblyName);
+            func = func ?? (s => !s.IsInterface);
+            var classTypes = assembly.GetTypes().Where(s => !s.IsInterface).Where(func).ToList();
+            foreach (var classType in classTypes)
+            {
+                foreach (var interfaceType in classType.GetInterfaces().Where(func))
+                {
+                    result.Add(new KeyValuePair<Type, Type>(classType, interfaceType));
+                }
+            }
+            return result;
         }
     }
 }
