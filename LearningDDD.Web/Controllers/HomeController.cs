@@ -6,17 +6,22 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LearningDDD.Web.Models;
 using LearningDDD.Application.Interface;
-using LearningDDD.Application.ViewModels;
+using LearningDDD.Application.ViewModels.User;
+using LearningDDD.Domain.Commands.User;
+using AutoMapper;
 
 namespace LearningDDD.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IUserAppService _userAppService;
+        private readonly IMapper _mapper;
 
-        public HomeController(IUserAppService userAppService)
+        public HomeController(IUserAppService userAppService
+            , IMapper mapper)
         {
             _userAppService = userAppService;
+            _mapper = mapper;
         }
 
         public IActionResult Index()
@@ -41,15 +46,27 @@ namespace LearningDDD.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Insert(UserVM userVM)
         {
-            if (ModelState.IsValid)
+            var result = new BaseResult<List<string>>();
+            ////视图模型验证
+            //if (!ModelState.IsValid)
+            //{
+            //    return Error();
+            //}
+
+            //命令模型验证
+            var createUserCommand = new CreateUserCommand(_mapper.Map<Domain.Models.User>(userVM));
+            if (!createUserCommand.IsValid())
             {
-                await _userAppService.AddAsync(userVM);
+                result.IsSuccess = false;
+                result.Data = createUserCommand.ValidationResult.Errors
+                    .Select(s => s.ErrorMessage)
+                    .ToList();
+                return new JsonResult(result);
             }
-            else
-            {
-                return Error();
-            }
-            return NoContent();
+
+            await _userAppService.AddAsync(userVM);
+
+            return new JsonResult(result);
         }
 
         [HttpDelete]

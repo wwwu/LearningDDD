@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using LearningDDD.Application.Interface;
-using LearningDDD.Application.ViewModels;
+using LearningDDD.Application.ViewModels.User;
 using LearningDDD.Domain.IRepository;
 using LearningDDD.Domain.Models;
 using System;

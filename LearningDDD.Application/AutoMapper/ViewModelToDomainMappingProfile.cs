@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LearningDDD.Application.ViewModels;
+using LearningDDD.Application.ViewModels.User;
 using LearningDDD.Domain.Models;
 using System;
 using System.Collections.Generic;

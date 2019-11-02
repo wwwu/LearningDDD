@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@using LearningDDD.Application.ViewModels;
+@using LearningDDD.Application.ViewModels.User;
 @model IEnumerable<UserVM>
 
 <div class="text-center">
@@ -111,10 +111,14 @@
                 url: "/home/insert",
                 data: $("#form-add").serialize(),
                 success: function (result) {
-                    location.reload();
+                    if (!result.IsSuccess) {
+                        alert(result.data.join('\r\n'));
+                    } else {
+                        location.reload();
+                    }
                 },
                 error: function (ex) {
-                    alert("异常");
+                    alert(ex);
                 }
             });
         });
@@ -129,7 +133,7 @@
                     tr.remove();
                 },
                 error: function (ex) {
-                    alert("异常");
+                    alert(ex);
                 }
             })
         });

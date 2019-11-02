@@ -1,4 +1,4 @@
-﻿using LearningDDD.Application.ViewModels;
+﻿using LearningDDD.Application.ViewModels.User;
 using System;
 using System.Collections.Generic;
 using System.Text;

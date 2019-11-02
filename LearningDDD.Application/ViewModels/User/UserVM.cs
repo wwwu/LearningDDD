@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace LearningDDD.Application.ViewModels
+namespace LearningDDD.Application.ViewModels.User
 {
     public class UserVM
     {
