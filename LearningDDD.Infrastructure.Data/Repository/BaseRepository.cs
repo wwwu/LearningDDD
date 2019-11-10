@@ -3,6 +3,7 @@ using LearningDDD.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace LearningDDD.Infrastructure.Data.Repository
@@ -30,6 +31,16 @@ namespace LearningDDD.Infrastructure.Data.Repository
         {
             _dbContext.Dispose();
             GC.SuppressFinalize(this);
+        }
+
+        public bool Any(Expression<Func<TEntity, bool>> expression)
+        {
+            return _dbContext.Set<TEntity>().Any(expression);
+        }
+
+        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression)
+        {
+            return  await _dbContext.Set<TEntity>().AnyAsync(expression);
         }
 
         public IQueryable<TEntity> GetAll()

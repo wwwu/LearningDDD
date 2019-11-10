@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MediatR;
 
 namespace LearningDDD.Domain.Core.Commands
 {
     /// <summary>
     /// 命令模型基类
     /// </summary>
-    public abstract class BaseCommand
+    public abstract class BaseCommand : IRequest
     {
         /// <summary>
         /// 时间戳

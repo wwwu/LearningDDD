@@ -18,6 +18,11 @@ using LearningDDD.Infrastructure.Data.Repository;
 using LearningDDD.Infrastructure.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using MediatR;
+using LearningDDD.Domain.Core.Bus;
+using LearningDDD.Infrastructure.Data.Bus;
+using LearningDDD.Domain.Commands.User;
+using LearningDDD.Domain.CommandHandlers;
 
 namespace LearningDDD.Web
 {
@@ -61,6 +66,14 @@ namespace LearningDDD.Web
             //Repository
             foreach (var item in GetClassAndInterface("LearningDDD.Infrastructure.Data", s => s.Name.EndsWith("Repository")))
                 services.AddScoped(item.Value, item.Key);
+            //UnitOfWork
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            //MediatR
+            services.AddMediatR(typeof(Startup));
+            services.AddScoped<IMediatorHandler, InMemoryBus>();
+            // Domain - Commands
+            services.AddScoped<IRequestHandler<CreateUserCommand, Unit>, UserCommandHandlers>();
 
             #endregion
 

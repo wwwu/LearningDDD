@@ -10,13 +10,19 @@ namespace LearningDDD.Domain.Commands.User
     /// </summary>
     public class CreateUserCommand : UserCommand
     {
-        public CreateUserCommand(Models.User user)
+        public CreateUserCommand(Guid id, string password, string name, string email
+            , string city, string province, string streetAndNumber)
         {
-            Id = user.Id;
-            Password = user.Password;
-            Name = user.Name;
-            Email = user.Email;
-            Address = user.Address;
+            Id = id;
+            Password = password;
+            Name = name;
+            Email = email;
+            Address = new Models.Address
+            {
+                City = city,
+                Province = province,
+                StreetAndNumber = streetAndNumber,
+            };
         }
 
         public override bool IsValid()

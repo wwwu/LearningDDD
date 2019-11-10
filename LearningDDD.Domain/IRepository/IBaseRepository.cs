@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +21,20 @@ namespace LearningDDD.Domain.IRepository
         /// </summary>
         /// <param name="entity"></param>
         Task AddAsync(TEntity entity);
+
+        /// <summary>
+        /// 是否存在
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        bool Any(Expression<Func<TEntity, bool>> expression);
+
+        /// <summary>
+        /// 是否存在
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression);
 
         /// <summary>
         /// 根据id获取对象

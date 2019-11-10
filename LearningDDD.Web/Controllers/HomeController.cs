@@ -53,16 +53,16 @@ namespace LearningDDD.Web.Controllers
             //    return Error();
             //}
 
-            //命令模型验证
-            var createUserCommand = new CreateUserCommand(_mapper.Map<Domain.Models.User>(userVM));
-            if (!createUserCommand.IsValid())
-            {
-                result.IsSuccess = false;
-                result.Data = createUserCommand.ValidationResult.Errors
-                    .Select(s => s.ErrorMessage)
-                    .ToList();
-                return new JsonResult(result);
-            }
+            ////命令模型验证
+            //var createUserCommand = new CreateUserCommand(_mapper.Map<Domain.Models.User>(userVM));
+            //if (!createUserCommand.IsValid())
+            //{
+            //    result.IsSuccess = false;
+            //    result.Data = createUserCommand.ValidationResult.Errors
+            //        .Select(s => s.ErrorMessage)
+            //        .ToList();
+            //    return new JsonResult(result);
+            //}
 
             await _userAppService.AddAsync(userVM);
 

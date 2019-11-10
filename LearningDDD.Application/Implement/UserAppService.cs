@@ -2,6 +2,8 @@
 using AutoMapper.QueryableExtensions;
 using LearningDDD.Application.Interface;
 using LearningDDD.Application.ViewModels.User;
+using LearningDDD.Domain.Commands.User;
+using LearningDDD.Domain.Core.Bus;
 using LearningDDD.Domain.IRepository;
 using LearningDDD.Domain.Models;
 using System;
@@ -15,18 +17,22 @@ namespace LearningDDD.Application.Implement
     {
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
+        private readonly IMediatorHandler _bus;
 
         public UserAppService(IMapper mapper
-            , IUserRepository userRepository)
+            , IUserRepository userRepository
+            , IMediatorHandler bus)
         {
             _mapper = mapper;
             _userRepository = userRepository;
+            _bus = bus;
         }
 
         public async Task AddAsync(UserVM userVM)
         {
-            await _userRepository.AddAsync(_mapper.Map<User>(userVM));
-            await _userRepository.SaveChangesAsync();
+            var result = await _bus.SendCommand(_mapper.Map<CreateUserCommand>(userVM));
+            //await _userRepository.AddAsync(_mapper.Map<User>(userVM));
+            //await _userRepository.SaveChangesAsync();
         }
 
         public IEnumerable<UserVM> GetAll()
