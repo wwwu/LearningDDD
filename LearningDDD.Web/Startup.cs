@@ -23,6 +23,9 @@ using LearningDDD.Domain.Core.Bus;
 using LearningDDD.Infrastructure.Data.Bus;
 using LearningDDD.Domain.Commands.User;
 using LearningDDD.Domain.CommandHandlers;
+using LearningDDD.Domain.Events.User;
+using LearningDDD.Domain.EventHandlers;
+using LearningDDD.Domain.Core.Notifications;
 
 namespace LearningDDD.Web
 {
@@ -72,8 +75,12 @@ namespace LearningDDD.Web
             //MediatR
             services.AddMediatR(typeof(Startup));
             services.AddScoped<IMediatorHandler, InMemoryBus>();
-            // Domain - Commands
+            //Domain - Commands
             services.AddScoped<IRequestHandler<CreateUserCommand, Unit>, UserCommandHandlers>();
+            //Domain - Events
+            services.AddScoped<INotificationHandler<UserCreatedEvent>, UserEventHandler>();
+            //领域通知
+            services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
 
             #endregion
 

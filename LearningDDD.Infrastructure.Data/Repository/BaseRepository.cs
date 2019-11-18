@@ -27,6 +27,18 @@ namespace LearningDDD.Infrastructure.Data.Repository
             await _dbContext.Set<TEntity>().AddAsync(entity);
         }
 
+        public TEntity AddReturnEntity(TEntity entity)
+        {
+            var result = _dbContext.Set<TEntity>().Add(entity);
+            return result.Entity;
+        }
+
+        public async Task<TEntity> AddReturnEntityAsync(TEntity entity)
+        {
+            var result = await _dbContext.Set<TEntity>().AddAsync(entity);
+            return result.Entity;
+        }
+
         public void Dispose()
         {
             _dbContext.Dispose();

@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LearningDDD.Domain.Core.Bus;
 using LearningDDD.Domain.Core.Commands;
+using LearningDDD.Domain.Core.Events;
 using MediatR;
 
 namespace LearningDDD.Infrastructure.Data.Bus
@@ -17,9 +18,21 @@ namespace LearningDDD.Infrastructure.Data.Bus
             _mediator = mediator;
         }
 
-        public async Task<Unit> SendCommand<T>(T command) where T : BaseCommand
+        public Task<Unit> SendCommand<T>(T command) where T : Command
         {
-            return await _mediator.Send(command);
+            return _mediator.Send(command);
+        }
+
+        /// <summary>
+        /// 引发事件的实现方法
+        /// </summary>
+        /// <typeparam name="T">Event：INotification</typeparam>
+        /// <param name="event">Event事件模型</param>
+        /// <returns></returns>
+        public Task RaiseEvent<T>(T @event) where T : Event
+        {
+            // MediatR中介者模式中的第二种方法，发布/订阅模式
+            return _mediator.Publish(@event);
         }
     }
 }

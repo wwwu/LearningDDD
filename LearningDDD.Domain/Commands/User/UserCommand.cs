@@ -8,7 +8,7 @@ namespace LearningDDD.Domain.Commands.User
     /// <summary>
     /// User命令模型基类
     /// </summary>
-    public abstract class UserCommand : BaseCommand
+    public abstract class UserCommand : Command
     {
         public Guid Id { get; protected set; }
 

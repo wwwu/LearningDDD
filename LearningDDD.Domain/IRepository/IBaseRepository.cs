@@ -16,11 +16,22 @@ namespace LearningDDD.Domain.IRepository
         /// 添加
         /// </summary>
         /// <param name="entity"></param>
-        void Add(TEntity entity);/// <summary>
+        void Add(TEntity entity);
+        /// <summary>
         /// 添加
         /// </summary>
         /// <param name="entity"></param>
         Task AddAsync(TEntity entity);
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="entity"></param>
+        TEntity AddReturnEntity(TEntity entity);
+        /// <summary>
+        /// 添加
+        /// </summary>
+        /// <param name="entity"></param>
+        Task<TEntity> AddReturnEntityAsync(TEntity entity);
 
         /// <summary>
         /// 是否存在

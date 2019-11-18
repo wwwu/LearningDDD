@@ -8,7 +8,7 @@ namespace LearningDDD.Domain.Core.Commands
     /// <summary>
     /// 命令模型基类
     /// </summary>
-    public abstract class BaseCommand : IRequest
+    public abstract class Command : IRequest
     {
         /// <summary>
         /// 时间戳

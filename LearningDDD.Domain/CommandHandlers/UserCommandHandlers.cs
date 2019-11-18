@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using LearningDDD.Domain.Commands.User;
 using LearningDDD.Domain.Core.Bus;
+using LearningDDD.Domain.Core.Notifications;
+using LearningDDD.Domain.Events.User;
 using LearningDDD.Domain.IRepository;
 using LearningDDD.Domain.Models;
 using MediatR;
@@ -40,27 +43,33 @@ namespace LearningDDD.Domain.CommandHandlers
             //命令验证
             if (!request.IsValid())
             {
+                //领域通知
+                foreach (var error in request.ValidationResult.Errors)
+                {
+                    await _bus.RaiseEvent(new DomainNotification(error.ErrorMessage));
+                }                
                 return result;
             }
 
             //业务校验
-            var user = _mapper.Map<User>(request);
-            if (await _userRepository.AnyAsync(s => s.Email == user.Email))
+            var userModel = _mapper.Map<User>(request);
+            if (await _userRepository.AnyAsync(s => s.Email == userModel.Email))
             {
-
+                //领域通知
+                await _bus.RaiseEvent(new DomainNotification("该邮箱已经被使用！"));
                 return result;
             }
 
             //持久化
-            await _userRepository.AddAsync(user);
-
+            var userEntity = await _userRepository.AddReturnEntityAsync(userModel);
             //提交工作单元
             if (await CommitAsync())
             {
-                // 提交成功后，这里需要发布领域事件
-                // 比如欢迎用户注册邮件呀，短信呀等
-
-                // waiting....
+                //领域事件
+                _ = Task.Run(() =>
+                {
+                    _ = _bus.RaiseEvent(new UserCreatedEvent(userEntity.Id, userEntity.Name, userEntity.Email));
+                });
             }
 
             return result;

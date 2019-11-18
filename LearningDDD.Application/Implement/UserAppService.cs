@@ -30,9 +30,8 @@ namespace LearningDDD.Application.Implement
 
         public async Task AddAsync(UserVM userVM)
         {
-            var result = await _bus.SendCommand(_mapper.Map<CreateUserCommand>(userVM));
-            //await _userRepository.AddAsync(_mapper.Map<User>(userVM));
-            //await _userRepository.SaveChangesAsync();
+            var command = _mapper.Map<CreateUserCommand>(userVM);
+            var result = await _bus.SendCommand(command);
         }
 
         public IEnumerable<UserVM> GetAll()

@@ -74,11 +74,15 @@ namespace LearningDDD.Domain.Core.Models
         /// <returns></returns>
         public virtual T DeepCopy()
         {
-            MemoryStream memoryStream = new MemoryStream();
-            BinaryFormatter formatter = new BinaryFormatter();
-            formatter.Serialize(memoryStream, this);
-            memoryStream.Position = 0;
-            return (T)formatter.Deserialize(memoryStream);
+            T result;
+            using (var memoryStream = new MemoryStream())
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(memoryStream, this);
+                memoryStream.Position = 0;
+                result = (T)formatter.Deserialize(memoryStream);
+            }
+            return result;
         }
     }
 }

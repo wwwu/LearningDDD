@@ -111,8 +111,9 @@
                 url: "/home/insert",
                 data: $("#form-add").serialize(),
                 success: function (result) {
-                    if (!result.IsSuccess) {
-                        alert(result.data.join('\r\n'));
+                    if (!result.isSuccess) {
+                        var message = result.data.map(function(s){return s.value;});
+                        alert(message);
                     } else {
                         location.reload();
                     }
