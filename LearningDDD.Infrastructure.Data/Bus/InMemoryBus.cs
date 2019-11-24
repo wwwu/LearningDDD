@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using LearningDDD.Domain.Core.Bus;
 using LearningDDD.Domain.Core.Commands;
 using LearningDDD.Domain.Core.Events;
+using LearningDDD.Domain.IRepository;
+using LearningDDD.Infrastructure.Data.EventSourcing;
 using MediatR;
 
 namespace LearningDDD.Infrastructure.Data.Bus
@@ -12,10 +14,13 @@ namespace LearningDDD.Infrastructure.Data.Bus
     public sealed class InMemoryBus : IMediatorHandler
     {
         private readonly IMediator _mediator;
+        private readonly IEventStoreService _eventStoreService;
 
-        public InMemoryBus(IMediator mediator)
+        public InMemoryBus(IMediator mediator,
+            IEventStoreService eventStoreService)
         {
             _mediator = mediator;
+            _eventStoreService = eventStoreService;
         }
 
         public Task<Unit> SendCommand<T>(T command) where T : Command
@@ -31,7 +36,11 @@ namespace LearningDDD.Infrastructure.Data.Bus
         /// <returns></returns>
         public Task RaiseEvent<T>(T @event) where T : Event
         {
-            // MediatR中介者模式中的第二种方法，发布/订阅模式
+            //除了领域通知以外的事件都保存下来
+            if (!@event.MessageType.Equals("DomainNotification"))
+                _eventStoreService?.Save(@event);
+
+            //MediatR中介者模式中的第二种方法，发布/订阅模式
             return _mediator.Publish(@event);
         }
     }

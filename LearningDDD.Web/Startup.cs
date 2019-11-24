@@ -26,6 +26,7 @@ using LearningDDD.Domain.CommandHandlers;
 using LearningDDD.Domain.Events.User;
 using LearningDDD.Domain.EventHandlers;
 using LearningDDD.Domain.Core.Notifications;
+using LearningDDD.Infrastructure.Data.EventSourcing;
 
 namespace LearningDDD.Web
 {
@@ -81,6 +82,8 @@ namespace LearningDDD.Web
             services.AddScoped<INotificationHandler<UserCreatedEvent>, UserEventHandler>();
             //领域通知
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
+            //EventSourcing
+            services.AddScoped<IEventStoreService, EventStoreService>();
 
             #endregion
 

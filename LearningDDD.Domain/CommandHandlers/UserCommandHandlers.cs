@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using LearningDDD.Domain.Commands.User;
@@ -12,27 +8,21 @@ using LearningDDD.Domain.Events.User;
 using LearningDDD.Domain.IRepository;
 using LearningDDD.Domain.Models;
 using MediatR;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace LearningDDD.Domain.CommandHandlers
 {
     public class UserCommandHandlers : CommandHandler, IRequestHandler<CreateUserCommand, Unit>
     {
         private readonly IMediatorHandler _bus;
-        private readonly IUnitOfWork _uow;
-        private readonly IMemoryCache _memoryCache;
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
 
         public UserCommandHandlers(IMediatorHandler bus
             , IUnitOfWork uow
-            , IMemoryCache memoryCache
             , IMapper mapper
-            , IUserRepository userRepository) : base(bus, uow, memoryCache)
+            , IUserRepository userRepository) : base(uow)
         {
             _bus = bus;
-            _uow = uow;
-            _memoryCache = memoryCache;
             _mapper = mapper;
             _userRepository = userRepository;
         }
@@ -66,10 +56,7 @@ namespace LearningDDD.Domain.CommandHandlers
             if (await CommitAsync())
             {
                 //领域事件
-                _ = Task.Run(() =>
-                {
-                    _ = _bus.RaiseEvent(new UserCreatedEvent(userEntity.Id, userEntity.Name, userEntity.Email));
-                });
+                _ = _bus.RaiseEvent(new UserCreatedEvent(userEntity.Id, userEntity.Name, userEntity.Email));
             }
 
             return result;

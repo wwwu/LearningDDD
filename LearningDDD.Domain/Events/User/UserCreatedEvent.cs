@@ -9,6 +9,7 @@ namespace LearningDDD.Domain.Events.User
     {
         public UserCreatedEvent(Guid id, string name, string email)
         {
+            AggregateId = id;
             Id = id;
             Name = name;
             Email = email;

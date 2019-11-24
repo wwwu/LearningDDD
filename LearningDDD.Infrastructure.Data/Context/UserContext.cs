@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using LearningDDD.Domain.Core.Events;
 using LearningDDD.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +28,7 @@ namespace LearningDDD.Infrastructure.Data.Context
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<StoredEvent> StoredEvents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -56,6 +58,26 @@ namespace LearningDDD.Infrastructure.Data.Context
                     .HasColumnType("varchar(100)")
                     .HasColumnName("Address_StreetAndNumber");
             });
+
+            #endregion
+
+            #region StoredEvent
+
+            modelBuilder.Entity<StoredEvent>().HasKey(s => s.Id);
+            modelBuilder.Entity<StoredEvent>().Property(s => s.Id)
+                .ValueGeneratedOnAdd();
+            modelBuilder.Entity<StoredEvent>().Property(s => s.AggregateId)
+                .HasColumnType("char(36)")
+                .IsRequired();
+            modelBuilder.Entity<StoredEvent>().Property(s => s.MessageType)
+                .HasColumnType("varchar(200)");
+            modelBuilder.Entity<StoredEvent>().Property(s => s.Data)
+                .HasColumnType("json");
+            modelBuilder.Entity<StoredEvent>().Property(s => s.User)
+                .HasColumnType("varchar(50)");
+            modelBuilder.Entity<StoredEvent>().Property(s => s.Timestamp)
+                .HasColumnType("datetime(3)")
+                .IsRequired();
 
             #endregion
 

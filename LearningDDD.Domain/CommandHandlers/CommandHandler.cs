@@ -10,17 +10,11 @@ namespace LearningDDD.Domain.CommandHandlers
 {
     public class CommandHandler
     {
-        private readonly IMediatorHandler _bus;
         private readonly IUnitOfWork _uow;
-        private readonly IMemoryCache _memoryCache;
 
-        public CommandHandler(IMediatorHandler bus
-            , IUnitOfWork uow
-            , IMemoryCache memoryCache)
+        public CommandHandler(IUnitOfWork uow)
         {
-            _bus = bus;
             _uow = uow;
-            _memoryCache = memoryCache;
         }
 
         public async Task<bool> CommitAsync()
