@@ -5,28 +5,25 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
 using LearningDDD.Application.AutoMapper;
-using LearningDDD.Application.Interface;
-using LearningDDD.Application.Implement;
 using LearningDDD.Domain.IRepository;
-using LearningDDD.Infrastructure.Data.Repository;
-using LearningDDD.Infrastructure.Data.Context;
+using LearningDDD.Infrastructure.Repository;
+using LearningDDD.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using MediatR;
-using LearningDDD.Domain.Core.Bus;
-using LearningDDD.Infrastructure.Data.Bus;
+using LearningDDD.Domain.Bus;
+using LearningDDD.Infrastructure.Bus;
 using LearningDDD.Domain.Commands.User;
 using LearningDDD.Domain.CommandHandlers;
 using LearningDDD.Domain.Events.User;
 using LearningDDD.Domain.EventHandlers;
-using LearningDDD.Domain.Core.Notifications;
-using LearningDDD.Infrastructure.Data.EventSourcing;
+using LearningDDD.Domain.Notifications;
+using LearningDDD.Infrastructure.EventSourcing;
 
 namespace LearningDDD.Web
 {
@@ -68,7 +65,7 @@ namespace LearningDDD.Web
             foreach (var item in GetClassAndInterface("LearningDDD.Application", s => s.Name.EndsWith("AppService")))
                 services.AddScoped(item.Value, item.Key);
             //Repository
-            foreach (var item in GetClassAndInterface("LearningDDD.Infrastructure.Data", s => s.Name.EndsWith("Repository")))
+            foreach (var item in GetClassAndInterface("LearningDDD.Infrastructure", s => s.Name.EndsWith("Repository")))
                 services.AddScoped(item.Value, item.Key);
             //UnitOfWork
             services.AddScoped<IUnitOfWork, UnitOfWork>();

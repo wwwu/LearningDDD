@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LearningDDD.Application\LearningDDD.Application.csproj" />
-    <ProjectReference Include="..\LearningDDD.Infrastructure.Data\LearningDDD.Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\LearningDDD.Infrastructure\LearningDDD.Infrastructure.csproj" />
   </ItemGroup>
 
 

@@ -3,7 +3,7 @@ using AutoMapper.QueryableExtensions;
 using LearningDDD.Application.Interface;
 using LearningDDD.Application.ViewModels.User;
 using LearningDDD.Domain.Commands.User;
-using LearningDDD.Domain.Core.Bus;
+using LearningDDD.Domain.Bus;
 using LearningDDD.Domain.IRepository;
 using LearningDDD.Domain.Models;
 using System;

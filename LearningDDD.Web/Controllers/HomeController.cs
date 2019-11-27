@@ -8,7 +8,7 @@ using LearningDDD.Web.Models;
 using LearningDDD.Application.Interface;
 using LearningDDD.Application.ViewModels.User;
 using MediatR;
-using LearningDDD.Domain.Core.Notifications;
+using LearningDDD.Domain.Notifications;
 
 namespace LearningDDD.Web.Controllers
 {

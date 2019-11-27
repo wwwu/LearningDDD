@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using LearningDDD.Domain.Core.Bus;
 using LearningDDD.Domain.IRepository;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace LearningDDD.Domain.CommandHandlers
 {

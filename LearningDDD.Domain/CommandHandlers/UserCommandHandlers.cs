@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using LearningDDD.Domain.Commands.User;
-using LearningDDD.Domain.Core.Bus;
-using LearningDDD.Domain.Core.Notifications;
+using LearningDDD.Domain.Bus;
+using LearningDDD.Domain.Notifications;
 using LearningDDD.Domain.Events.User;
 using LearningDDD.Domain.IRepository;
 using LearningDDD.Domain.Models;

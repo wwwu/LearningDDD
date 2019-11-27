@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using LearningDDD.Domain.Core.Events;
 
 namespace LearningDDD.Domain.Events.User
 {

@@ -1,8 +1,7 @@
-﻿using LearningDDD.Domain.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Text;
+using LearningDDD.Domain.Models.Base;
 
 namespace LearningDDD.Domain.Models
 {
