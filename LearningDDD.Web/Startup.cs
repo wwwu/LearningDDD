@@ -55,8 +55,8 @@ namespace LearningDDD.Web
             //AutoMapper
             AutoMapper.IConfigurationProvider mapperConfig = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile(new DomainToViewModelMappingProfile());
-                cfg.AddProfile(new ViewModelToDomainMappingProfile());
+                cfg.AddProfile(new EntityToDtoMappingProfile());
+                cfg.AddProfile(new DtoToDomainMappingProfile());
             });
             services.AddSingleton(mapperConfig);
             services.AddScoped<IMapper, Mapper>();
@@ -75,6 +75,8 @@ namespace LearningDDD.Web
             services.AddScoped<IMediatorHandler, InMemoryBus>();
             //Domain - Commands
             services.AddScoped<IRequestHandler<CreateUserCommand, Unit>, UserCommandHandlers>();
+            services.AddScoped<IRequestHandler<RemoveUserCommand, Unit>, UserCommandHandlers>();
+            services.AddScoped<IRequestHandler<UpdateUserCommand, Unit>, UserCommandHandlers>();
             //Domain - Events
             services.AddScoped<INotificationHandler<UserCreatedEvent>, UserEventHandler>();
             //领域通知

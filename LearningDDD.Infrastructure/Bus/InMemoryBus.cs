@@ -36,7 +36,7 @@ namespace LearningDDD.Infrastructure.Bus
         public Task RaiseEvent<T>(T @event) where T : Event
         {
             //除了领域通知以外的事件都保存下来
-            if (!@event.MessageType.Equals("DomainNotification"))
+            if ((@event is Domain.Notifications.DomainNotification) == true)
                 _eventStoreService?.Save(@event);
 
             //MediatR中介者模式中的第二种方法，发布/订阅模式

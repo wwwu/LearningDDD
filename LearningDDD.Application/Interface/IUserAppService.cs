@@ -1,4 +1,4 @@
-﻿using LearningDDD.Application.ViewModels.User;
+﻿using LearningDDD.Application.Dto.User;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,13 +8,13 @@ namespace LearningDDD.Application.Interface
 {
     public interface IUserAppService: IDisposable
     {
-        Task AddAsync(UserVM userVM);
+        Task AddAsync(CreateUserDto dto);
 
-        IEnumerable<UserVM> GetAll();
+        IEnumerable<UserDto> GetAll();
 
-        Task<UserVM> GetByIdAsync(Guid id);
+        Task<UserDto> GetByIdAsync(Guid id);
 
-        Task Update(UserVM userVM);
+        Task Update(UpdateUserDto dto);
 
         Task RemoveAsync(Guid id);
     }

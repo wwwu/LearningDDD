@@ -9,7 +9,6 @@ namespace LearningDDD.Domain.Events
         public StoredEvent(Event @event, string data, string user)
         {
             AggregateId = @event.AggregateId;
-            MessageType = @event.MessageType;
             Data = data;
             User = user;
         }

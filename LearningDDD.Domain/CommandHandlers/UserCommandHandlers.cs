@@ -11,7 +11,10 @@ using MediatR;
 
 namespace LearningDDD.Domain.CommandHandlers
 {
-    public class UserCommandHandlers : CommandHandler, IRequestHandler<CreateUserCommand, Unit>
+    public class UserCommandHandlers : CommandHandler
+        , IRequestHandler<CreateUserCommand, Unit>
+        , IRequestHandler<RemoveUserCommand, Unit>
+        , IRequestHandler<UpdateUserCommand, Unit>
     {
         private readonly IMediatorHandler _bus;
         private readonly IMapper _mapper;
@@ -58,6 +61,45 @@ namespace LearningDDD.Domain.CommandHandlers
                 //领域事件
                 _ = _bus.RaiseEvent(new UserCreatedEvent(userEntity.Id, userEntity.Name, userEntity.Email));
             }
+
+            return result;
+        }
+
+        public async Task<Unit> Handle(RemoveUserCommand request, CancellationToken cancellationToken)
+        {
+            var result = default(Unit);
+            await _userRepository.RemoveAsync(request.Id);
+            await CommitAsync();
+            return result;
+        }
+
+        public async Task<Unit> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        {
+            var result = default(Unit);
+            //命令验证
+            if (!request.IsValid())
+            {
+                //领域通知
+                foreach (var error in request.ValidationResult.Errors)
+                {
+                    await _bus.RaiseEvent(new DomainNotification(error.ErrorMessage));
+                }
+                return result;
+            }
+
+            //校验
+            var entity = await _userRepository.GetByIdAsync(request.Id);
+            if (entity is null)
+            {
+                //通知
+                await _bus.RaiseEvent(new DomainNotification("用户不存在！"));
+                return result;
+            }
+
+            //持久化
+            _mapper.Map(request, entity);
+            _userRepository.Update(entity);
+            await CommitAsync();
 
             return result;
         }

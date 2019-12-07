@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LearningDDD.Web.Models;
 using LearningDDD.Application.Interface;
-using LearningDDD.Application.ViewModels.User;
+using LearningDDD.Application.Dto.User;
 using MediatR;
 using LearningDDD.Domain.Notifications;
 
@@ -44,11 +44,11 @@ namespace LearningDDD.Web.Controllers
         #region User
 
         [HttpPost]
-        public async Task<IActionResult> Insert(UserVM userVM)
+        public async Task<IActionResult> Insert(CreateUserDto createUserDto)
         {
             var result = new BaseResult<object>();
 
-            await _userAppService.AddAsync(userVM);
+            await _userAppService.AddAsync(createUserDto);
             if (_notificationHandler.HasNotifications())
             {
                 result.IsSuccess = false;

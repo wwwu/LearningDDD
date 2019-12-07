@@ -5,17 +5,12 @@ using LearningDDD.Domain.Validations.User;
 
 namespace LearningDDD.Domain.Commands.User
 {
-    /// <summary>
-    /// 创建User命令模型
-    /// </summary>
-    public class CreateUserCommand : UserCommand
+    public class UpdateUserCommand : UserCommand
     {
-        public CreateUserCommand(string password, string name, string email
-            , string city, string province, string streetAndNumber)
+        public UpdateUserCommand(Guid id, string name, string city, string province, string streetAndNumber)
         {
-            Password = password;
+            Id = id;
             Name = name;
-            Email = email;
             Address = new Models.Address
             {
                 City = city,
@@ -26,7 +21,7 @@ namespace LearningDDD.Domain.Commands.User
 
         public override bool IsValid()
         {
-            ValidationResult = new CreateUserValidation().Validate(this);
+            ValidationResult = new UpdateUserValidation().Validate(this);
             return ValidationResult.IsValid;
         }
     }
