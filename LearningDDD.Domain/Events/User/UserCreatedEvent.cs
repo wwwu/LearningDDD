@@ -6,7 +6,7 @@ namespace LearningDDD.Domain.Events.User
 {
     public class UserCreatedEvent : Event
     {
-        public UserCreatedEvent(Guid id, string name, string email)
+        public UserCreatedEvent(Guid id, string name, string email) : base(id)
         {
             AggregateId = id;
             Id = id;

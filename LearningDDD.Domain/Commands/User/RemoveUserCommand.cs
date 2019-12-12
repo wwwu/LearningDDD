@@ -6,16 +6,16 @@ namespace LearningDDD.Domain.Commands.User
 {
     public class RemoveUserCommand : Command
     {
-        public Guid Id { get; set; }
-
-        public RemoveUserCommand(Guid id)
+        public RemoveUserCommand(Guid id) : base(id)
         {
             Id = id;
         }
 
+        public Guid Id { get; set; }
+
         public override bool IsValid()
         {
-            throw new NotImplementedException();
+            return true;
         }
     }
 }

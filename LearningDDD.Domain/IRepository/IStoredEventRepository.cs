@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using LearningDDD.Domain.Events;
+using LearningDDD.Domain.Models;
 
 namespace LearningDDD.Domain.IRepository
 {

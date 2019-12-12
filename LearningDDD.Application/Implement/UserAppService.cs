@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LearningDDD.Application.Implement
-{.
+{
 
     public class UserAppService : IUserAppService
     {

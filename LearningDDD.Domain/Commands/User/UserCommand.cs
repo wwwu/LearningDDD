@@ -9,6 +9,10 @@ namespace LearningDDD.Domain.Commands.User
     /// </summary>
     public abstract class UserCommand : Command
     {
+        protected UserCommand(Guid aggregateId) : base(aggregateId)
+        {
+        }
+
         public Guid Id { get; protected set; }
 
         public string Password { get; protected set; }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using LearningDDD.Domain.Events;
 using MediatR;
 
 namespace LearningDDD.Domain.Commands
@@ -8,12 +9,11 @@ namespace LearningDDD.Domain.Commands
     /// <summary>
     /// 命令模型基类
     /// </summary>
-    public abstract class Command : IRequest
+    public abstract class Command : Event, IRequest
     {
-        /// <summary>
-        /// 时间戳
-        /// </summary>
-        public DateTime Timestamp { get; private set; } = DateTime.Now;
+        protected Command(Guid aggregateId) : base(aggregateId)
+        {
+        }
 
         /// <summary>
         /// 模型验证验证结果

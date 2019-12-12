@@ -30,25 +30,27 @@ namespace LearningDDD.Web.Controllers
             return View(model);
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        #region User
-
         [HttpPost]
         public async Task<IActionResult> Insert(CreateUserDto createUserDto)
         {
             var result = new BaseResult<object>();
 
             await _userAppService.AddAsync(createUserDto);
+            if (_notificationHandler.HasNotifications())
+            {
+                result.IsSuccess = false;
+                result.Data = _notificationHandler.GetNotifications();
+            }
+
+            return new JsonResult(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(UpdateUserDto updateUserDto)
+        {
+            var result = new BaseResult<object>();
+
+            await _userAppService.Update(updateUserDto);
             if (_notificationHandler.HasNotifications())
             {
                 result.IsSuccess = false;
@@ -65,6 +67,17 @@ namespace LearningDDD.Web.Controllers
             return Ok();
         }
 
-        #endregion
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
     }
 }

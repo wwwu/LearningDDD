@@ -1,5 +1,4 @@
-﻿using LearningDDD.Domain.Events;
-using LearningDDD.Domain.Models;
+﻿using LearningDDD.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -66,6 +65,8 @@ namespace LearningDDD.Infrastructure.Context
             modelBuilder.Entity<StoredEvent>().Property(s => s.AggregateId)
                 .HasColumnType("char(36)")
                 .IsRequired();
+            modelBuilder.Entity<StoredEvent>().Property(s => s.MessageType)
+                .HasColumnType("varchar(200)");
             modelBuilder.Entity<StoredEvent>().Property(s => s.Data)
                 .HasColumnType("json");
             modelBuilder.Entity<StoredEvent>().Property(s => s.User)

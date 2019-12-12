@@ -11,7 +11,7 @@ namespace LearningDDD.Domain.Commands.User
     public class CreateUserCommand : UserCommand
     {
         public CreateUserCommand(string password, string name, string email
-            , string city, string province, string streetAndNumber)
+            , string city, string province, string streetAndNumber) : base(Guid.Empty)
         {
             Password = password;
             Name = name;

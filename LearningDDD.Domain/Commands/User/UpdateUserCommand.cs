@@ -7,7 +7,7 @@ namespace LearningDDD.Domain.Commands.User
 {
     public class UpdateUserCommand : UserCommand
     {
-        public UpdateUserCommand(Guid id, string name, string city, string province, string streetAndNumber)
+        public UpdateUserCommand(Guid id, string name, string city, string province, string streetAndNumber) : base(id)
         {
             Id = id;
             Name = name;

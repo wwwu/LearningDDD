@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LearningDDD.Domain.Events;
 using LearningDDD.Domain.IRepository;
+using LearningDDD.Domain.Models;
 using LearningDDD.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
