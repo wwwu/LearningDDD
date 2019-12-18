@@ -72,7 +72,7 @@ namespace LearningDDD.Web
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             //MediatR
-            services.AddMediatR(typeof(Event));
+            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
             services.AddScoped<IMediatorHandler, InMemoryBus>();
             //Domain - Commands
             services.AddScoped<IRequestHandler<CreateUserCommand, Unit>, UserCommandHandlers>();

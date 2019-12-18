@@ -17,12 +17,12 @@ namespace LearningDDD.Infrastructure.Repository
             _dbContext = context;
         }
 
-        public void Add(TEntity entity)
+        public virtual void Add(TEntity entity)
         {
             _dbContext.Set<TEntity>().Add(entity);
         }
 
-        public async Task AddAsync(TEntity entity)
+        public virtual async Task AddAsync(TEntity entity)
         {
             await _dbContext.Set<TEntity>().AddAsync(entity);
         }

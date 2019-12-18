@@ -8,6 +8,6 @@ namespace LearningDDD.Infrastructure.EventSourcing
 {
     public interface IEventStoreService
     {
-        Task Save<T>(T @event) where T : Event;
+        Task Save<T>(T @event) where T : EventBase;
     }
 }

@@ -9,7 +9,7 @@ namespace LearningDDD.Domain.Commands
     /// <summary>
     /// 命令模型基类
     /// </summary>
-    public abstract class Command : Event, IRequest
+    public abstract class Command : EventBase, IRequest
     {
         protected Command(Guid aggregateId) : base(aggregateId)
         {

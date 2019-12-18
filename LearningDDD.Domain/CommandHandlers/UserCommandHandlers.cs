@@ -53,13 +53,12 @@ namespace LearningDDD.Domain.CommandHandlers
                 return result;
             }
 
-            //持久化
+            //数据持久化
             var userEntity = await _userRepository.AddReturnEntityAsync(userModel);
-            //提交工作单元
             if (await CommitAsync())
             {
                 //领域事件
-                _ = _bus.RaiseEvent(new UserCreatedEvent(userEntity.Id, userEntity.Name, userEntity.Email));
+                await _bus.RaiseEvent(new UserCreatedEvent(userEntity.Id, userEntity.Name, userEntity.Email));
             }
 
             return result;

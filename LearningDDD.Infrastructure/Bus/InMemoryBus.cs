@@ -24,8 +24,8 @@ namespace LearningDDD.Infrastructure.Bus
 
         public Task<Unit> SendCommand<T>(T command) where T : Command
         {
-            //存储命令，由于存储在同一个数据库(上下文)，此处必须Wait执行完成
-            _eventStoreService.Save(command).Wait();
+            //存储所有的领域命令
+            Task.Run(() => _eventStoreService.Save(command));
             return _mediator.Send(command);
         }
 
@@ -37,9 +37,9 @@ namespace LearningDDD.Infrastructure.Bus
         /// <returns></returns>
         public Task RaiseEvent<T>(T @event) where T : Event
         {
-            //除了领域通知以外的事件都保存下来
+            //除了通知以外的领域事件都保存下来
             if ((@event is Domain.Notifications.DomainNotification) == false)
-                _eventStoreService.Save(@event).Wait();
+                Task.Run(() => _eventStoreService.Save(@event));
 
             //MediatR中介者模式中的第二种方法，发布/订阅模式
             return _mediator.Publish(@event);

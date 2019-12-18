@@ -2,38 +2,42 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using LearningDDD.Domain.Commands;
 using LearningDDD.Domain.Events;
-using LearningDDD.Domain.IRepository;
+using LearningDDD.Domain.Models;
+using LearningDDD.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
 namespace LearningDDD.Infrastructure.EventSourcing
 {
     public class EventStoreService : IEventStoreService
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IStoredEventRepository _storedEventRepository;
+        private readonly IConfiguration _configuration;
+        private readonly UserContext _dbContext;
 
-        public EventStoreService(IUnitOfWork unitOfWork,
-            IStoredEventRepository storedEventRepository)
+        public EventStoreService(IConfiguration configuration)
         {
-            _unitOfWork = unitOfWork;
-            _storedEventRepository = storedEventRepository;
+            //借助数据库做存储，避免与领域层业务内使用同一上下文
+            _configuration = configuration;
+            var dbContextOptions = new DbContextOptions<UserContext>();
+            var dbContextOptionBuilder = new DbContextOptionsBuilder<UserContext>(dbContextOptions)
+                .UseMySql(_configuration["ConnectionStrings:DefaultConnection"]);
+            _dbContext = new UserContext(dbContextOptionBuilder.Options);
         }
 
-        public async Task Save<T>(T @event) where T : Event
+        public Task Save<T>(T @event) where T : EventBase
         {
-            var json = JsonConvert.SerializeObject(@event);
-            var storedEvent = new Domain.Models.StoredEvent
+            var storedEvent = new StoredEvent
             {
                 AggregateId = @event.AggregateId,
                 Timestamp = @event.Timestamp,
                 MessageType = typeof(T).FullName,
-                User = "w",
+                User = string.Empty,
                 Data = JsonConvert.SerializeObject(@event)
             };
-            await _storedEventRepository.AddAsync(storedEvent);
-            await _unitOfWork.CommitAsync();
+            _dbContext.Set<StoredEvent>().Add(storedEvent);
+            return _dbContext.SaveChangesAsync();
         }
     }
 }

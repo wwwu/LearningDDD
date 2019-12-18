@@ -20,7 +20,6 @@ namespace LearningDDD.Infrastructure.Context
             //    .AddJsonFile("appsettings.json")
             //    .Build();
             ////optionsBuilder.UseMySql(config.GetConnectionString("DefaultConnection"));
-            //optionsBuilder.UseMySql("Server=132.232.77.146;Database=ddd;Uid=root;Pwd=123abc123;Character Set=utf8mb4;persist security info=True;");
         }
 
         public DbSet<User> Users { get; set; }
