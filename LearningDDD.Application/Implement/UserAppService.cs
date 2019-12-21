@@ -8,6 +8,7 @@ using LearningDDD.Domain.IRepository;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace LearningDDD.Application.Implement
 {
@@ -46,7 +47,10 @@ namespace LearningDDD.Application.Implement
 
         public IEnumerable<UserDto> GetAll()
         {
-            return _userRepository.GetAll().ProjectTo<UserDto>(_mapper.ConfigurationProvider);
+            return _userRepository.GetAll(tracking: false)
+                .OrderByDescending(s => s.Id)
+                .ProjectTo<UserDto>(_mapper.ConfigurationProvider)
+                .AsEnumerable();
         }
 
         public async Task<UserDto> GetByIdAsync(Guid id)

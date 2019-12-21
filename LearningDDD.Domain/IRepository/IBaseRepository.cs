@@ -64,7 +64,7 @@ namespace LearningDDD.Domain.IRepository
         /// 获取列表
         /// </summary>
         /// <returns></returns>
-        IQueryable<TEntity> GetAll();
+        IQueryable<TEntity> GetAll(bool tracking = true);
 
         /// <summary>
         /// 更新

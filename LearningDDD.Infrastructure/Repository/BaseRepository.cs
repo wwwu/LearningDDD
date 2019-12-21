@@ -55,9 +55,12 @@ namespace LearningDDD.Infrastructure.Repository
             return  await _dbContext.Set<TEntity>().AnyAsync(expression);
         }
 
-        public IQueryable<TEntity> GetAll()
+        public IQueryable<TEntity> GetAll(bool tracking = true)
         {
-            return _dbContext.Set<TEntity>();
+            var queryble = _dbContext.Set<TEntity>().AsQueryable();
+            if (!tracking)
+                queryble = queryble.AsNoTracking();
+            return queryble;
         }
 
         public TEntity GetById(Guid id)
