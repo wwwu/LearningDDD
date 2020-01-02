@@ -22,7 +22,7 @@ namespace LearningDDD.Infrastructure.Bus
             _eventStoreService = eventStoreService;
         }
 
-        public Task<Unit> SendCommand<T>(T command) where T : Command
+        public Task<R> SendCommand<T, R>(T command) where T : Command<R>
         {
             //存储所有的领域命令
             Task.Run(() => _eventStoreService.Save(command));
@@ -37,9 +37,7 @@ namespace LearningDDD.Infrastructure.Bus
         /// <returns></returns>
         public Task RaiseEvent<T>(T @event) where T : Event
         {
-            //除了通知以外的领域事件都保存下来
-            if ((@event is Domain.Notifications.DomainNotification) == false)
-                Task.Run(() => _eventStoreService.Save(@event));
+            Task.Run(() => _eventStoreService.Save(@event));
 
             //MediatR中介者模式中的第二种方法，发布/订阅模式
             return _mediator.Publish(@event);

@@ -16,10 +16,11 @@ namespace LearningDDD.Domain.Bus
         /// <summary>
         /// 发布命令，将我们的命令模型发布到中介者模块
         /// </summary>
-        /// <typeparam name="T">基础BaseCommand的命令模型类型</typeparam>
+        /// <typeparam name="T">基础Command的命令模型类型</typeparam>
+        /// <typeparam name="R">返回类型</typeparam>
         /// <param name="command">命令模型</param>
         /// <returns></returns>
-        Task<Unit> SendCommand<T>(T command) where T : Command;
+        Task<R> SendCommand<T, R>(T command) where T : Command<R>;
 
         /// <summary>
         /// 引发事件，通过总线，发布事件

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using LearningDDD.Domain.Events;
 using LearningDDD.Domain.Models;
 using LearningDDD.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 
 namespace LearningDDD.Infrastructure.EventSourcing
 {
@@ -34,7 +34,7 @@ namespace LearningDDD.Infrastructure.EventSourcing
                 Timestamp = @event.Timestamp,
                 MessageType = typeof(T).FullName,
                 User = string.Empty,
-                Data = JsonConvert.SerializeObject(@event)
+                Data = JsonSerializer.Serialize(@event)
             };
             _dbContext.Set<StoredEvent>().Add(storedEvent);
             return _dbContext.SaveChangesAsync();

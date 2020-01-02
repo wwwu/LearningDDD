@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using LearningDDD.Domain.Models.Base;
 
 namespace LearningDDD.Application.Implement
 {
@@ -28,21 +29,24 @@ namespace LearningDDD.Application.Implement
             _bus = bus;
         }
 
-        public async Task AddAsync(CreateUserDto dto)
+        public async Task<BaseResult> AddAsync(CreateUserDto dto)
         {
             var command = _mapper.Map<CreateUserCommand>(dto);
-            _ = await _bus.SendCommand(command);
+            var result = await _bus.SendCommand<CreateUserCommand, BaseResult>(command);
+            return result;
         }
 
-        public async Task RemoveAsync(Guid id)
+        public async Task<bool> RemoveAsync(Guid id)
         {
-            _ = await _bus.SendCommand(new RemoveUserCommand(id));
+            var result = await _bus.SendCommand<RemoveUserCommand,bool>(new RemoveUserCommand(id));
+            return result;
         }
 
-        public async Task Update(UpdateUserDto dto)
+        public async Task<BaseResult> Update(UpdateUserDto dto)
         {
             var command = _mapper.Map<UpdateUserCommand>(dto);
-            _ = await _bus.SendCommand(command);
+            var result = await _bus.SendCommand<UpdateUserCommand, BaseResult>(command);
+            return result;
         }
 
         public IEnumerable<UserDto> GetAll()

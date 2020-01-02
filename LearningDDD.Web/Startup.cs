@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
@@ -18,14 +17,9 @@ using System.Reflection;
 using MediatR;
 using LearningDDD.Domain.Bus;
 using LearningDDD.Infrastructure.Bus;
-using LearningDDD.Domain.Commands.User;
-using LearningDDD.Domain.CommandHandlers;
-using LearningDDD.Domain.Events.User;
-using LearningDDD.Domain.EventHandlers;
-using LearningDDD.Domain.Notifications;
 using LearningDDD.Infrastructure.EventSourcing;
-using LearningDDD.Domain.Events;
 using Microsoft.Extensions.Hosting;
+using LearningDDD.Domain.Events;
 
 namespace LearningDDD.Web
 {
@@ -72,17 +66,9 @@ namespace LearningDDD.Web
             //UnitOfWork
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            //MediatR
-            services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
+            //MediatR 这里用Hanler所在项目中的任一文件都可以
+            services.AddMediatR(typeof(Event).GetTypeInfo().Assembly);
             services.AddScoped<IMediatorHandler, InMemoryBus>();
-            //Domain - Commands
-            services.AddScoped<IRequestHandler<CreateUserCommand, Unit>, UserCommandHandlers>();
-            services.AddScoped<IRequestHandler<RemoveUserCommand, Unit>, UserCommandHandlers>();
-            services.AddScoped<IRequestHandler<UpdateUserCommand, Unit>, UserCommandHandlers>();
-            //Domain - Events
-            services.AddScoped<INotificationHandler<UserCreatedEvent>, UserEventHandler>();
-            //领域通知
-            services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
             //EventSourcing
             services.AddScoped<IEventStoreService, EventStoreService>();
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LearningDDD.Web.Models
+namespace LearningDDD.Domain.Models.Base
 {
     public class BaseResult<T> : BaseResult
     {
@@ -20,7 +20,7 @@ namespace LearningDDD.Web.Models
 
     public class BaseResult
     {
-        public BaseResult(bool isSuccess = true)
+        public BaseResult(bool isSuccess = false)
         {
             IsSuccess = isSuccess;
         }

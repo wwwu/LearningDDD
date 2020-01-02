@@ -1,4 +1,5 @@
 ﻿using LearningDDD.Application.Dto.User;
+using LearningDDD.Domain.Models.Base;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,14 +9,14 @@ namespace LearningDDD.Application.Interface
 {
     public interface IUserAppService: IDisposable
     {
-        Task AddAsync(CreateUserDto dto);
+        Task<BaseResult> AddAsync(CreateUserDto dto);
 
         IEnumerable<UserDto> GetAll();
 
         Task<UserDto> GetByIdAsync(Guid id);
 
-        Task Update(UpdateUserDto dto);
+        Task<BaseResult> Update(UpdateUserDto dto);
 
-        Task RemoveAsync(Guid id);
+        Task<bool> RemoveAsync(Guid id);
     }
 }

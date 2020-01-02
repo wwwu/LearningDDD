@@ -112,8 +112,8 @@
                 data: $("#form-add").serialize(),
                 success: function (result) {
                     if (!result.isSuccess) {
-                        var message = result.data.map(function(s){return s.value;});
-                        alert(message);
+                        //var message = result.data.map(function(s){return s.value;});
+                        alert(result.message);
                     } else {
                         location.reload();
                     }

@@ -7,21 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 using LearningDDD.Web.Models;
 using LearningDDD.Application.Interface;
 using LearningDDD.Application.Dto.User;
-using MediatR;
-using LearningDDD.Domain.Notifications;
 
 namespace LearningDDD.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IUserAppService _userAppService;
-        private readonly DomainNotificationHandler _notificationHandler;
 
-        public HomeController(IUserAppService userAppService,
-            INotificationHandler<DomainNotification> notificationHandler)
+        public HomeController(IUserAppService userAppService)
         {
             _userAppService = userAppService;
-            _notificationHandler = notificationHandler as DomainNotificationHandler;
         }
 
         public IActionResult Index()
@@ -33,30 +28,14 @@ namespace LearningDDD.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Insert(CreateUserDto createUserDto)
         {
-            var result = new BaseResult<object>();
-
-            await _userAppService.AddAsync(createUserDto);
-            if (_notificationHandler.HasNotifications())
-            {
-                result.IsSuccess = false;
-                result.Data = _notificationHandler.GetNotifications();
-            }
-
+            var result = await _userAppService.AddAsync(createUserDto);
             return new JsonResult(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> Update(UpdateUserDto updateUserDto)
         {
-            var result = new BaseResult<object>();
-
-            await _userAppService.Update(updateUserDto);
-            if (_notificationHandler.HasNotifications())
-            {
-                result.IsSuccess = false;
-                result.Data = _notificationHandler.GetNotifications();
-            }
-
+            var result = await _userAppService.Update(updateUserDto);
             return new JsonResult(result);
         }
 
