@@ -1,2 +1,2 @@
-![ddd](ddd.png)
+![ddd](ddd.jpg)
 ![cqrs](cqrs.jpg)
